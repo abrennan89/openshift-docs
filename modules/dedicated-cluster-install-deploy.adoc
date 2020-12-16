@@ -35,8 +35,8 @@ production deployments.
 
 .. Choose *Elasticsearch* from the list of available Operators, and click *Install*.
 
-.. On the *Create Operator Subscription* page, under *A specific namespace on the cluster* select *openshift-logging*.
-Then, click *Subscribe*.
+.. On the *Install Operator* page, under *A specific namespace on the cluster* select *openshift-logging*.
+Then, click *Install*.
 
 . Install the Cluster Logging Operator from the OperatorHub:
 
@@ -44,8 +44,8 @@ Then, click *Subscribe*.
 
 .. Choose  *Cluster Logging* from the list of available Operators, and click *Install*.
 
-.. On the *Create Operator Subscription* page, under *A specific namespace on the cluster* select *openshift-logging*.
-Then, click *Subscribe*.
+.. On the *Install Operator* page, under *A specific namespace on the cluster* select *openshift-logging*.
+Then, click *Install*.
 
 . Verify the operator installations:
 
@@ -73,8 +73,10 @@ the *Status* column for any errors or failures.
 
 .. Click the installed *Cluster Logging* Operator.
 
-.. Under the *Overview* tab, click *Create Instance* . Paste the following YAML
-definition into the window that displays.
+.. Under the *Details* tab, in the *Provided APIs* section, in the
+*Cluster Logging* box, click *Create Instance* . Select the *YAML View*
+radio button and paste the following YAML definition into the window
+that displays.
 +
 .Cluster Logging Custom Resource (CR)
 [source,yaml]
@@ -91,7 +93,7 @@ spec:
     elasticsearch:
       nodeCount: 3
       storage:
-        storageClassName: "gp2"
+        storageClassName: gp2
         size: "200Gi"
       redundancyPolicy: "SingleRedundancy"
       nodeSelector:
@@ -108,7 +110,7 @@ spec:
   curation:
     type: "curator"
     curator:
-      schedule: "30 3 * * *"
+      schedule: "15 * * * *"
       nodeSelector:
         node-role.kubernetes.io/worker: ""
   collection:
@@ -122,7 +124,7 @@ spec:
 .. Click *Create* to deploy the logging instance, which creates the Cluster
 Logging and Elasticsearch Custom Resources.
 
-. Verify that the Pods for the Cluster Logging instance deployed:
+. Verify that the pods for the Cluster Logging instance deployed:
 
 .. Switch to the *Workloads* → *Pods* page.
 

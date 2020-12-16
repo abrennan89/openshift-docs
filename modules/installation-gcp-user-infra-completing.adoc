@@ -19,9 +19,14 @@ cluster is ready.
 
 . Complete the cluster installation:
 +
+[source,terminal]
 ----
 $ ./openshift-install --dir=<installation_directory> wait-for install-complete <1>
-
+----
++
+.Example output
+[source,terminal]
+----
 INFO Waiting up to 30m0s for the cluster to initialize...
 ----
 <1> For `<installation_directory>`, specify the path to the directory that you
@@ -29,7 +34,7 @@ stored the installation files in.
 +
 [IMPORTANT]
 ====
-The Ignition config files that the installation program generates contain certificates that expire after 24 hours. You must keep the cluster running for 24 hours in a non-degraded state to ensure that the first certificate rotation has finished.
+The Ignition config files that the installation program generates contain certificates that expire after 24 hours, which are then renewed at that time. If the cluster is shut down before renewing the certificates and the cluster is later restarted after the 24 hours have elapsed, the cluster automatically recovers the expired certificates. The exception is that you must manually approve the pending `node-bootstrapper` certificate signing requests (CSRs) to recover kubelet certificates. See the documentation for _Recovering from expired control plane certificates_ for more information.
 ====
 
 . Observe the running state of your cluster.
@@ -37,51 +42,72 @@ The Ignition config files that the installation program generates contain certif
 --
 .. Run the following command to view the current cluster version and status:
 +
+[source,terminal]
 ----
 $ oc get clusterversion
+----
++
+.Example output
+[source,terminal]
+----
 NAME      VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
-version             False       True          24m     Working towards 4.3.0-0: 99% complete
+version             False       True          24m     Working towards 4.5.4: 99% complete
 ----
 
 .. Run the following command to view the Operators managed on the control plane by
 the Cluster Version Operator (CVO):
 +
+[source,terminal]
 ----
 $ oc get clusteroperators
+----
++
+.Example output
+[source,terminal]
+----
 NAME                                       VERSION   AVAILABLE   PROGRESSING   DEGRADED   SINCE
-authentication                             4.3.0-0   True        False         False      6m18s
-cloud-credential                           4.3.0-0   True        False         False      17m
-cluster-autoscaler                         4.3.0-0   True        False         False      80s
-console                                    4.3.0-0   True        False         False      3m57s
-dns                                        4.3.0-0   True        False         False      22m
-image-registry                             4.3.0-0   True        False         False      5m4s
-ingress                                    4.3.0-0   True        False         False      4m38s
-insights                                   4.3.0-0   True        False         False      21m
-kube-apiserver                             4.3.0-0   True        False         False      12m
-kube-controller-manager                    4.3.0-0   True        False         False      12m
-kube-scheduler                             4.3.0-0   True        False         False      11m
-machine-api                                4.3.0-0   True        False         False      18m
-machine-config                             4.3.0-0   True        False         False      22m
-marketplace                                4.3.0-0   True        False         False      5m38s
-monitoring                                 4.3.0-0   True        False         False      86s
-network                                    4.3.0-0   True        False         False      14m
-node-tuning                                4.3.0-0   True        False         False      6m8s
-openshift-apiserver                        4.3.0-0   True        False         False      6m48s
-openshift-controller-manager               4.3.0-0   True        False         False      12m
-openshift-samples                          4.3.0-0   True        False         False      67s
-operator-lifecycle-manager                 4.3.0-0   True        False         False      15m
-operator-lifecycle-manager-catalog         4.3.0-0   True        False         False      15m
-operator-lifecycle-manager-packageserver   4.3.0-0   True        False         False      6m48s
-service-ca                                 4.3.0-0   True        False         False      17m
-service-catalog-apiserver                  4.3.0-0   True        False         False      6m18s
-service-catalog-controller-manager         4.3.0-0   True        False         False      6m19s
-storage                                    4.3.0-0   True        False         False      6m20s
+authentication                             4.5.4     True        False         False      7m56s
+cloud-credential                           4.5.4     True        False         False      31m
+cluster-autoscaler                         4.5.4     True        False         False      16m
+console                                    4.5.4     True        False         False      10m
+csi-snapshot-controller                    4.5.4     True        False         False      16m
+dns                                        4.5.4     True        False         False      22m
+etcd                                       4.5.4     False       False         False      25s
+image-registry                             4.5.4     True        False         False      16m
+ingress                                    4.5.4     True        False         False      16m
+insights                                   4.5.4     True        False         False      17m
+kube-apiserver                             4.5.4     True        False         False      19m
+kube-controller-manager                    4.5.4     True        False         False      20m
+kube-scheduler                             4.5.4     True        False         False      20m
+kube-storage-version-migrator              4.5.4     True        False         False      16m
+machine-api                                4.5.4     True        False         False      22m
+machine-config                             4.5.4     True        False         False      22m
+marketplace                                4.5.4     True        False         False      16m
+monitoring                                 4.5.4     True        False         False      10m
+network                                    4.5.4     True        False         False      23m
+node-tuning                                4.5.4     True        False         False      23m
+openshift-apiserver                        4.5.4     True        False         False      17m
+openshift-controller-manager               4.5.4     True        False         False      15m
+openshift-samples                          4.5.4     True        False         False      16m
+operator-lifecycle-manager                 4.5.4     True        False         False      22m
+operator-lifecycle-manager-catalog         4.5.4     True        False         False      22m
+operator-lifecycle-manager-packageserver   4.5.4     True        False         False      18m
+service-ca                                 4.5.4     True        False         False      23m
+service-catalog-apiserver                  4.5.4     True        False         False      23m
+service-catalog-controller-manager         4.5.4     True        False         False      23m
+storage                                    4.5.4     True        False         False      17m
 ----
 
-.. Run the following command to view your cluster Pods:
+.. Run the following command to view your cluster pods:
 +
+[source,terminal]
 ----
 $ oc get pods --all-namespaces
+----
++
+.Example output
+[source,terminal]
+----
 NAMESPACE                                               NAME                                                                READY     STATUS      RESTARTS   AGE
 kube-system                                             etcd-member-ip-10-0-3-111.us-east-2.compute.internal                1/1       Running     0          35m
 kube-system                                             etcd-member-ip-10-0-3-239.us-east-2.compute.internal                1/1       Running     0          37m

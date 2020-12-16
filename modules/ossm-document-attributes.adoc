@@ -3,6 +3,7 @@
 // The following are shared by all RHOSSM documents:
 :toc:
 :toclevels: 4
+:toc-title:
 :experimental:
 //
 // Product content attributes, that is, substitution variables in the files.
@@ -11,7 +12,8 @@
 :ProductName: Red Hat OpenShift Service Mesh
 :ProductShortName: Service Mesh
 :ProductRelease:
-:ProductVersion: 1.0.9
+:ProductVersion: 2.0.0
+:MaistraVersion: 2.0
 :product-build:
 :DownloadURL: registry.redhat.io
 :kebab: image:kebab.png[title="Options menu"]
@@ -21,7 +23,7 @@
 // Changing the value changes the generated URL.
 //
 :DocInfoProductName: OpenShift Service Mesh
-:DocInfoProductNumber: 1.0
+:DocInfoProductNumber: 2.0
 //
 // Book Names:
 //     Defining the book names in document attributes instead of hard-coding them in

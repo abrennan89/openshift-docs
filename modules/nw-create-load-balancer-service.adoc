@@ -19,6 +19,7 @@ To create a load balancer service:
 
 . Load the project where the service you want to expose is located.
 +
+[source,terminal]
 ----
 $ oc project project1
 ----
@@ -27,7 +28,6 @@ $ oc project project1
 file as needed:
 +
 .Sample load balancer configuration file
-====
 ----
 apiVersion: v1
 kind: Service
@@ -42,34 +42,39 @@ spec:
   selector:
     name: mysql <4>
 ----
-
 <1> Enter a descriptive name for the load balancer service.
 <2> Enter the same port that the service you want to expose is listening on.
 <3> Enter `loadbalancer` as the type.
 <4> Enter the name of the service.
-====
 
 . Save and exit the file.
 
 . Run the following command to create the service:
 +
+[source,terminal]
 ----
-oc create -f <file-name>
+$ oc create -f <file-name>
 ----
 +
 For example:
 +
+[source,terminal]
 ----
-oc create -f mysql-lb.yaml
+$ oc create -f mysql-lb.yaml
 ----
 
 . Execute the following command to view the new service:
 +
+[source,terminal]
 ----
-$ oc get svc -n openshift-ingress
-NAME                      TYPE           CLUSTER-IP      EXTERNAL-IP      PORT(S)                      AGE
-router-default            LoadBalancer   172.30.16.119   52.230.228.163   80:30745/TCP,443:32561/TCP   2d6h
-router-internal-default   ClusterIP      172.30.101.15   <none>           80/TCP,443/TCP,1936/TCP      2d6h
+$ oc get svc
+----
++
+.Example output
+[source,terminal]
+----
+NAME       TYPE           CLUSTER-IP      EXTERNAL-IP                             PORT(S)          AGE
+egress-2   LoadBalancer   172.30.22.226   ad42f5d8b303045-487804948.example.com   3306:30357/TCP   15m
 ----
 +
 The service has an external IP address automatically assigned if there is a cloud
@@ -78,12 +83,14 @@ provider enabled.
 . On the master, use a tool, such as cURL, to make sure you can reach the service
 using the public IP address:
 +
+[source,terminal]
 ----
 $ curl <public-ip>:<port>
 ----
-++
++
 For example:
 +
+[source,terminal]
 ----
 $ curl 172.29.121.74:3306
 ----
@@ -94,8 +101,14 @@ you are connecting with the service:
 +
 If you have a MySQL client, log in with the standard CLI command:
 +
+[source,terminal]
 ----
 $ mysql -h 172.30.131.89 -u admin -p
+----
++
+.Example output
+[source,terminal]
+----
 Enter password:
 Welcome to the MariaDB monitor.  Commands end with ; or \g.
 

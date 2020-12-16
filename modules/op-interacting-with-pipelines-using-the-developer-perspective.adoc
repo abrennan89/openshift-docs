@@ -1,0 +1,26 @@
+// Ths module is included in the following assembly:
+//
+// *openshift_pipelines/working-with-pipelines-using-the-developer-perspective.adoc
+
+[id="op-interacting-with-pipelines-using-the-developer-perspective_{context}"]
+= Interacting with Pipelines using the Developer perspective
+
+The *Pipelines* view in the *Developer* perspective lists all the Pipelines in a project along with details, such as the namespace in which the Pipeline was created, the last PipelineRun, the status of the Tasks in the PipelineRun, the status of the PipelineRun, and the time taken for the run.
+
+[Discrete]
+.Procedure
+. In the *Pipelines* view of the *Developer* perspective, select a project from the *Project* drop-down list to see the Pipelines in that project.
++
+.Pipelines view in the Developer perspective
+image::op-pipeline-list.png[]
++
+. Click the required Pipeline to see the *Pipeline Details* page. This page provides a visual representation of all the serial and parallel Tasks in the Pipeline. The Tasks are also listed at the lower right of the page. You can click the listed *Tasks* to view Task details.
++
+//image::op-pipeline-details.png[Pipeline details]
++
+. Optionally, in the *Pipeline Details* page:
+
+* Click the *YAML* tab to edit the YAML file for the Pipeline.
+* Click the *Pipeline Runs* tab to see the completed, running, or failed runs for the Pipeline. You can use the Options menu {kebab} to stop a running Pipeline, to rerun a Pipeline using the same parameters and resources as that of the previous Pipeline execution, or to delete a PipelineRun.
+* Click the *Parameters* tab to see the parameters defined in the Pipeline. You can also add or edit additional parameters as required.
+* Click the *Resources* tab to see the resources defined in the Pipeline. You can also add or edit additional resources as required.

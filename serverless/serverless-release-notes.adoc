@@ -8,15 +8,9 @@ toc::[]
 
 For an overview of {ServerlessProductName} functionality, see xref:../serverless/serverless-getting-started.adoc#serverless-getting-started[Getting started with OpenShift Serverless].
 
-[id="getting-support"]
-== Getting support
-
-If you experience difficulty with a procedure described in this documentation,
-visit the link:https://access.redhat.com/support/offerings/techpreview/[Customer Portal] to learn more about support for Technology Preview features.
-
 // Modules included, most to least recent
-include::modules/serverless-rn-1-5-0.adoc[leveloffset=+1]
-include::modules/serverless-rn-1-4-0.adoc[leveloffset=+1]
+include::modules/serverless-rn-1-11-0.adoc[leveloffset=+1]
+include::modules/serverless-rn-1-10-0.adoc[leveloffset=+1]
 
 [id="additional-resources"]
 == Additional resources
@@ -25,11 +19,6 @@ include::modules/serverless-rn-1-4-0.adoc[leveloffset=+1]
 
 * For details about the latest Knative Serving release, see the link:https://github.com/knative/serving/releases[Knative Serving releases page].
 * For details about the latest Knative Serving Operator release, see the link:https://github.com/knative/serving-operator/releases[Knative Serving Operator releases page].
-* For details about the latest Knative CLI release, see the link:https://github.com/knative/client/releases[Knative client releases page].
+* For details about the latest Knative CLI release, see the link:https://github.com/knative/client/releases[Knative CLI releases page].
 * For details about the latest Knative Eventing release, see the link:https://github.com/knative/eventing/releases[Knative Eventing releases page].
-
-[NOTE]
-====
-Knative Eventing is currently available as a Developer Preview on {product-title}.
-See the upstream link:https://openshift-knative.github.io/docs/docs/index.html[Knative Eventing on {product-title} documentation].
-====
+* link:https://openshift-knative.github.io/docs/docs/functions/about-functions.html[{ServerlessProductName} Functions Developer Preview documentation].

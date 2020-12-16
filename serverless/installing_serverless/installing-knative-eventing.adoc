@@ -4,50 +4,24 @@ include::modules/serverless-document-attributes.adoc[]
 include::modules/common-attributes.adoc[]
 :context: installing-knative-eventing
 
-You must create a `KnativeEventing` object to install Knative Eventing using the {ServerlessOperatorName}.
+toc::[]
 
-[IMPORTANT]
-====
-You must create the `KnativeEventing` object in the `knative-eventing` namespace, as shown in the sample YAML, or the object is ignored.
-====
+After you install the {ServerlessOperatorName}, you can install Knative Eventing by following the procedures described in this guide.
 
-[source,yaml]
-.Sample `eventing.yaml`
-----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: knative-eventing
----
-apiVersion: operator.knative.dev/v1alpha1
-kind: KnativeEventing
-metadata:
-  name: knative-eventing
-  namespace: knative-eventing
-----
+This guide provides information about installing Knative Eventing using the default settings.
+// However, you can configure more advanced settings in the KnativeEventing custom resource definition.
 
+// For more information about configuration options for the KnativeEventing custom resource definition, see xref:../installing_serverless/serverless-install-config-options.adoc#serverless-install-config-options[Advanced installation configuration options].
 
-.Prerequisite
-* An account with cluster administrator access.
-* Installed {ServerlessOperatorName}.
+[id="installing-knative-eventing-prerequisites"]
+== Prerequisites
+* You have access to an {product-title} account with cluster administrator access.
+* You have installed {ServerlessOperatorName}.
 
-.Procedure
-. Copy the sample YAML file into the `eventing.yaml` file and enter the following command to apply it:
-+
-----
-$ oc apply -f eventing.yaml
-----
-+
-. To verify the installation is complete, enter the following command:
-+
-----
-$ oc get knativeeventing.operator.knative.dev/knative-eventing -n knative-eventing --template='{{range .status.conditions}}{{printf "%s=%s\n" .type .status}}{{end}}'
-----
-+
-Results should be similar to:
-+
-----
-DeploymentsAvailable=True
-InstallSucceeded=True
-Ready=True
-----
+include::modules/serverless-install-eventing-web-console.adoc[leveloffset=+1]
+include::modules/serverless-install-eventing-yaml.adoc[leveloffset=+1]
+
+[id="installing-knative-eventing-next-steps"]
+== Next steps
+
+* Install the Knative CLI to use `kn` commands with Knative Eventing. For example, `kn source` commands. See the documentation on xref:../installing_serverless/installing-kn#installing-kn[Installing the Knative CLI (`kn`)].

@@ -1,5 +1,6 @@
 // Module included in the following assemblies:
-// * assembly/openshift_images
+// * openshift_images/images-understand.aodc
+// * openshift_images/image-streams-managing.adoc
 
 [id="images-imagestream-use_{context}"]
 = Using imagestreams
@@ -61,7 +62,7 @@ known-good version of the image, ensuring that your application will not break
 unexpectedly.
 
 * You can configure security around who can view and use the images through
-permissions on the imagestream objects.
+permissions on the `ImageStream` objects.
 
 * Users that lack permission to read or list images on the cluster level can still
 retrieve the images tagged in a project using imagestreams.

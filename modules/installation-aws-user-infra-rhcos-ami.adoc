@@ -6,8 +6,14 @@
 [id="installation-aws-user-infra-rhcos-ami_{context}"]
 = {op-system} AMIs for the AWS infrastructure
 
-You must use a valid {op-system-first} AMI for your Amazon Web Services
-(AWS) zone for your {product-title} nodes.
+Red Hat provides {op-system-first} AMIs valid for the various Amazon Web
+Services (AWS) zones you can specify for your {product-title} nodes.
+
+[NOTE]
+====
+You can also install to regions that do not have a {op-system} AMI published by
+importing your own AMI.
+====
 
 .{op-system} AMIs
 
@@ -18,54 +24,54 @@ You must use a valid {op-system-first} AMI for your Amazon Web Services
 |AWS AMI
 
 |`ap-northeast-1`
-|`ami-023d0452866845125`
+|`ami-0cb46ba6945dbfebe`
 
 |`ap-northeast-2`
-|`ami-0ba4f9a0358bcb44a`
+|`ami-01e554d608de6087a`
 
 |`ap-south-1`
-|`ami-0bf62e963a473068e"`
+|`ami-09253ba33f828d47f`
 
 |`ap-southeast-1`
-|`ami-086b93722336bd1d9`
+|`ami-0a6a0f1f6106708c4`
 
 |`ap-southeast-2`
-|`ami-08929f33bfab49b83`
+|`ami-0e3e2b2ea00c35823`
 
 |`ca-central-1`
-|`ami-0f6d943a1fa9172fd`
+|`ami-0f5825ef10c76de32`
 
 |`eu-central-1`
-|`ami-0ceea534b63224411`
+|`ami-0a51f61236e6fc6f2`
 
 |`eu-north-1`
-|`ami-06b7087b2768f644a`
+|`ami-06d01bfaf14ad66a3`
 
 |`eu-west-1`
-|`ami-0e95125b57fa63b0d`
+|`ami-0e514a30ad261c978`
 
 |`eu-west-2`
-|`ami-0eef98c447b85ffcd`
+|`ami-0291fd4543d6940f4`
 
 |`eu-west-3`
-|`ami-0049e16104f360df6`
+|`ami-083f281d2864a71de`
 
 |`me-south-1`
-|`ami-0b03ea038629fd02e`
+|`ami-05a6ae5eadb5b244d`
 
 |`sa-east-1`
-|`ami-0c80d785b30eef121`
+|`ami-081f13881a31af160`
 
 |`us-east-1`
-|`ami-06f85a7940faa3217`
+|`ami-009cbe327d180d666`
 
 |`us-east-2`
-|`ami-04a79d8d7cfa540cc`
+|`ami-0346f64579665ce3c`
 
 |`us-west-1`
-|`ami-0633b392e8eff25e7`
+|`ami-07c185c787029b522`
 
 |`us-west-2`
-|`ami-0d231993dddc5cd2e`
+|`ami-01105d480bb47353f`
 
 |===

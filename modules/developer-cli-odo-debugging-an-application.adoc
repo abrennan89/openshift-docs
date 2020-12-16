@@ -1,0 +1,20 @@
+// Module included in the following assemblies:
+//
+// * cli_reference/creating_and_deploying_applications_with_odo/debugging-applications-in-odo.adoc
+
+[id="debugging-an-application_{context}"]
+
+= Debugging an application
+
+You can debug your application on in `odo` with the `odo debug` command.
+
+.Procedure
+
+. After an application is deployed, start the port forwarding for your component to debug the application:
++
+[source,terminal]
+----
+$ odo debug port-forward
+----
+
+. Attach the debugger bundled in your IDE to the component. Instructions vary depending on your IDE.

@@ -3,9 +3,17 @@
 // * logging/cluster-logging-elasticsearch.adoc
 
 [id="cluster-logging-elasticsearch-storage_{context}"]
-= Configuring Elasticsearch storage
+= Configuring persistent storage for the log store
 
 Elasticsearch requires persistent storage.  The faster the storage, the faster the Elasticsearch performance.
+
+[WARNING]
+====
+Using NFS storage as a volume or a persistent volume (or via NAS such as
+Gluster) is not supported for Elasticsearch storage, as Lucene relies on file
+system behavior that NFS does not supply. Data corruption and other problems can
+occur.
+====
 
 .Prerequisites
  
@@ -13,7 +21,7 @@ Elasticsearch requires persistent storage.  The faster the storage, the faster t
 
 .Procedure
 
-. Edit the Cluster Logging CR to specify that each data node in the cluster is bound to a Persistent Volume Claim.
+. Edit the `ClusterLogging` CR to specify that each data node in the cluster is bound to a Persistent Volume Claim.
 +
 [source,yaml]
 ----

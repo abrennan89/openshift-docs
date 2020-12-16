@@ -5,9 +5,9 @@ include::modules/common-attributes.adoc[]
 
 toc::[]
 
-After an environment has been prepared according to the documented prerequisites, the installation process is the same as other IPI-based platforms.
+include::modules/ipi-install-installing-rhel-on-the-provisioner-node.adoc[leveloffset=+1]
 
-include::modules/ipi-install-preparing-the-provision-node-for-openshift-install.adoc[leveloffset=+1]
+include::modules/ipi-install-preparing-the-provisioner-node-for-openshift-install.adoc[leveloffset=+1]
 
 include::modules/ipi-install-retrieving-the-openshift-installer.adoc[leveloffset=+1]
 
@@ -15,14 +15,14 @@ include::modules/ipi-install-extracting-the-openshift-installer.adoc[leveloffset
 
 include::modules/ipi-install-creating-an-rhcos-images-cache.adoc[leveloffset=+1]
 
-include::modules/ipi-install-configuring-the-install-config-file.adoc[leveloffset=+1]
+include::installing/installing_bare_metal_ipi/ipi-install-configuration-files.adoc[leveloffset=+1]
 
-include::modules/ipi-install-configuring-the-metal3-config-file.adoc[leveloffset=+1]
+include::modules/ipi-install-creating-a-disconnected-registry.adoc[leveloffset=+1]
 
-include::modules/ipi-install-creating-the-openshift-manifests.adoc[leveloffset=+1]
-
-include::modules/ipi-install-additional-install-config-parameters.adoc[leveloffset=+1]
+include::modules/ipi-install-deploying-routers-on-worker-nodes.adoc[leveloffset=+1]
 
 include::modules/ipi-install-validation-checklist-for-installation.adoc[leveloffset=+1]
 
 include::modules/ipi-install-deploying-the-cluster-via-the-openshift-installer.adoc[leveloffset=+1]
+
+include::modules/ipi-install-following-the-installation.adoc[leveloffset=+1]

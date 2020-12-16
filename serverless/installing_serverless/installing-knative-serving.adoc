@@ -4,51 +4,22 @@ include::modules/serverless-document-attributes.adoc[]
 include::modules/common-attributes.adoc[]
 :context: installing-knative-serving
 
-You must create a `KnativeServing` object to install Knative Serving using the {ServerlessOperatorName}.
+toc::[]
 
-[IMPORTANT]
-====
-You must create the `KnativeServing` object in the `knative-serving` namespace, as shown in the sample YAML, or it is ignored.
-====
+After you install the {ServerlessOperatorName}, you can install Knative Serving.
+This guide provides information about installing Knative Serving using the default settings. However, you can configure more advanced settings in the `KnativeServing` custom resource definition (CRD).
+For more information about configuration options for the `KnativeServing` CRD, see xref:../installing_serverless/serverless-install-config-options.adoc#serverless-install-config-options[Advanced installation configuration options].
 
-[source,yaml]
-.Sample `serving.yaml`
-----
-apiVersion: v1
-kind: Namespace
-metadata:
- name: knative-serving
----
-apiVersion: operator.knative.dev/v1alpha1
-kind: KnativeServing
-metadata:
- name: knative-serving
- namespace: knative-serving
-----
+[id="installing-knative-serving-prerequisites"]
+== Prerequisites
+* You have access to an {product-title} account with cluster administrator access.
+* You have installed the {ServerlessOperatorName}.
 
+include::modules/serverless-install-serving-web-console.adoc[leveloffset=+1]
+include::modules/serverless-install-serving-yaml.adoc[leveloffset=+1]
 
-.Prerequisite
-* An account with cluster administrator access.
-* Installed {ServerlessOperatorName}.
+[id="installing-knative-serving-next-steps"]
+== Next steps
 
-
-.Procedure
-. Copy the sample YAML file into the `serving.yaml` file and enter the following command to apply it:
-+
-----
-$ oc apply -f serving.yaml
-----
-+
-. To verify the installation is complete, enter the following command:
-+
-----
-$ oc get knativeserving.operator.knative.dev/knative-serving -n knative-serving --template='{{range .status.conditions}}{{printf "%s=%s\n" .type .status}}{{end}}'
-----
-+
-Results should be similar to:
-+
-----
-DeploymentsAvailable=True
-InstallSucceeded=True
-Ready=True
-----
+* For cloud events functionality on {ServerlessProductName}, you can install the Knative Eventing component. See the documentation on xref:../installing_serverless/installing-knative-eventing.adoc#installing-knative-eventing[Installing Knative Eventing].
+* Install the Knative CLI to use `kn` commands with Knative Serving. For example, `kn service` commands. See the documentation on xref:../installing_serverless/installing-kn#installing-kn[Installing the Knative CLI (`kn`)].

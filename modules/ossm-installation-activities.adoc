@@ -1,16 +1,13 @@
 // Module included in the following assemblies:
 //
-// * service_mesh/service_mesh_install/preparing-ossm-installation.adoc
+// * service_mesh/v1x/preparing-ossm-installation.adoc
+// * service_mesh/v2x/preparing-ossm-installation.adoc
+// * post_installation_configuration/network-configuration.adoc
 
 [id="ossm-installation-activities_{context}"]
 = {ProductName} installation activities
 
 To install the {ProductName} Operator, you must first install these Operators:
-
-[WARNING]
-====
-Please see configuring Elasticsearch for details on configuring the default Jaeger parameters for Elasticsearch in a production environment.
-====
 
 * *Elasticsearch* - Based on the open source link:https://www.elastic.co/[Elasticsearch] project that enables you to configure and manage an Elasticsearch cluster for tracing and logging with Jaeger.
 * *Jaeger* - based on the open source link:https://www.jaegertracing.io/[Jaeger] project, lets you perform tracing to monitor and troubleshoot transactions in complex distributed systems.

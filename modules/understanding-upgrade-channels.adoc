@@ -7,86 +7,105 @@
 // * updating/updating-disconnected-cluster.adoc
 
 [id="understanding-upgrade-channels_{context}"]
-= Understanding {product-title} upgrade channels
+= {product-title} upgrade channels and releases
 
-In {product-title} 4.1, Red Hat introduced the concept of upgrade channels for
-recommending the appropriate upgrade versions to your cluster. Upgrade channels
-separate upgrade strategies and also are used to control the cadence of updates.
-Channels are tied to a minor version of {product-title}. For instance,
-{product-title} {product-version} channels will never include an upgrade to a
-4.5 release. This ensures administrators make an explicit decision to upgrade to
-the next minor version of {product-title}. Channels only control updates and
-have no impact on the version of the cluster you install; the
-`openshift-install` binary for a given patch level of {product-title} always
-installs that patch level.
+In {product-title} 4.1, Red Hat introduced the concept of channels for
+recommending the appropriate release versions for cluster upgrade. By controlling
+the pace of upgrades, these upgrade channels allow you to choose an upgrade
+strategy. Upgrade channels are tied to a minor version of
+{product-title}. For instance, {product-title} {product-version}
+upgrade channels will never include an upgrade to a 4.7 release. This strategy ensures that
+administrators explicitly decide to upgrade to the next minor version of
+{product-title}. Upgrade channels control only release selection and do not impact the version of the cluster that you install; the `openshift-install`
+binary file for a specific version of {product-title} always installs that version.
 
-{product-title} {product-version}, which includes the upgrade from the previous 4.3
-release, has three upgrade channels to choose from:
+{product-title} {product-version} offers the following upgrade channels:
 
-* candidate-{product-version}
-* fast-{product-version}
-* stable-{product-version}
+* `candidate-{product-version}`
+* `fast-{product-version}`
+* `stable-{product-version}`
+* `eus-4.6` (only available when running 4.6)
 
-The upgrade channels contain two types of updates:
+[discrete]
+== candidate-{product-version} channel
 
-.  General Availability Software (or GA) - These versions of {product-title} are
-fully supported and are considered production quality. You may upgrade to the general
-availability release from either of the fast and stable channels.
+The `candidate-{product-version}` channel contains candidate builds for a z-stream
+({product-version}.z) release.
+Release candidates contain all the features of the product but are not supported. Use release candidate versions to test feature acceptance and assist in qualifying the next version
+of {product-title}.
+A release candidate is any build that is available in the candidate channel, including ones that do not contain link:https://semver.org/spec/v2.0.0.html#spec-item-9[a pre-release version] such as `-rc` in their names.
+After a version is available in the candidate channel, it goes through more quality checks. If
+it meets the quality standard, it is promoted to the `fast-{product-version}` or `stable-{product-version}` channels.
+Because of this strategy, if a specific release is available in both the `candidate-{product-version}` channel and in the `fast-{product-version}`
+or `stable-{product-version}` channels, it is a Red Hat supported version.
+The `candidate-{product-version}` channel can include release versions from which there are no recommended updates in any channel.
 
-.  Release Candidate Software (or RC) - These versions of {product-title} are
-representative of the eventual general availability release and are available only
-in the candidate-{product-version} channel. The release candidate will contain all
-the features of the product. You are allowed to upgrade from a release candidate to
-another release candidate and to upgrade from a previous minor version of
-{product-title} to the current release candidate. Release candidate builds are not
-supported by Red Hat and you will not be able to upgrade from a release candidate to
-the general availability release of {product-title}. Candidates should be used to
-test feature acceptance and assist in qualifying the next version of
-{product-title} in your infrastructure.
-+
+You can use the `candidate-{product-version}` channel to upgrade from a previous minor version of
+{product-title}.
+
 [NOTE]
 ====
-Release candidates differ from the nightly builds found on try.openshift.com. You
-cannot upgrade nightly builds to nightly builds. Nightly builds are available for
-early access to features but are not upgradable or supported.
+Release candidates differ from the nightly builds. Nightly
+builds are available for early access to features, but updating to or from nightly
+builds is neither recommended nor supported. Nightly builds are not available in
+any upgrade channel. You can reference the {product-title}
+ifdef::openshift-origin[]
+link:https://origin-release.apps.ci.l2s4.p1.openshiftapps.com/[release statuses]
+endif::[]
+ifndef::openshift-origin[]
+link:https://openshift-release.apps.ci.l2s4.p1.openshiftapps.com/[release statuses]
+endif::[]
+for more build information.
 ====
 
-For GA versions, the fast and stable channels present a choice between receiving
-updates as soon as they are available or allowing Red Hat to control the rollout of
-those updates.
+[discrete]
+== fast-{product-version} channel
+
+The `fast-{product-version}` channel is updated with new {product-version}
+versions as soon as Red Hat declares the given version as a general availability
+release. As such, these releases are fully supported, are production quality, and have
+performed well while available as a release candidate in the `candidate-{product-version}`
+channel from where they were promoted. Some time after a release appears in the
+`fast-{product-version}` channel, it is added to the `stable-{product-version}` channel. Releases
+never appear in the `stable-{product-version}` channel before they appear in the `fast-{product-version}` channel.
+
+You can use the `fast-{product-version}` channel to upgrade from a previous minor version of
+{product-title}.
 
 [discrete]
-== fast-{product-version}
+== stable-{product-version} channel
 
-The fast channel is updated with new {product-version} patch versions as soon as Red
-Hat declares they are generally available. Use this channel if you wish to receive
-updates as soon as they are available or for your pre-production environments when
-participating in the connected customer program. This channel will contain all
-z-stream ({product-version}.z) updates but will not suggest upgrades to the next
-minor release (4.5.z) when the next minor release is available.
+While the `fast-{product-version}` channel contains releases as soon
+as their errata are published, releases are added to the `stable-{product-version}` channel
+after a delay. During this delay, data is collected from Red Hat SRE teams, Red Hat support services,
+and pre-production and production environments that participate in connected customer program about the stability of the release.
+
+You can use the `stable-{product-version}` channel to upgrade from a previous minor version of
+{product-title}.
 
 [discrete]
-== stable-{product-version}
+== eus-4.6 channel
 
-The stable channel will contain updates on a time delay as they are gradually
-rolled out to customers based on data from our SRE teams, support services, and
-pre-production and production environments that participate in our connected
-customer program, rather than being immediately available as they are in the fast
-channel. For patch and CVE fixes this can range from several hours to a day and
-allows an extra period of assessment in how the software performs. If issues are
-detected during rollout, upgrades to that version may be blocked in both the fast
-and stable channels, and a new version may be introduced that will be the new
-preferred upgrade target.
+In addition to the stable channel, certain minor versions of {product-title} offer an
+Extended Update Support[https://access.redhat.com/support/policy/updates/openshift#ocp4_phases] (EUS).
+These EUS versions extend the maintenance phase for customers with Premium Subscriptions
+to 14 months. {product-title} 4.6 is currently the only minor version with EUS.
 
-Customers can improve this process by configuring pre-production systems on the
-fast channel, production systems on the stable channel, and participating in Red
-Hat’s connected customer program - this allows Red Hat to observe the impact of
-updates on your specific hardware and software configurations. Future releases may
-improve or alter the pace at which updates move from the fast to the stable channels.
+Although there is no difference between stable-4.6 and eus-4.6
+channels until {product-title} 4.6 transitions to EUS the phase, you can switch
+to the EUS channel as soon as it becomes available. When {product-title} 4.6
+transitions to the EUS phase of its lifecycle the stable-4.6 channel will
+no longer receive subsequent z-stream updates. After you upgrade to a version that
+is exclusive to the EUS channel, that cluster will no longer be eligible for minor
+version upgrades until upgrades to the next EUS version become available. The next
+planned EUS version is to be 4.10 and the upgrade to that version will require a
+serial set of version upgrades, such as from 4.6 to 4.7 to 4.8 to 4.9 to 4.10.
 
-If issues are discovered with an upgrade between patch levels, Red Hat may withdraw
-that suggested upgrade for affected versions. A newer patch would become available
-in the appropriate channels and be suggested for upgrade.
+Additionally, you may only switch to the EUS channel when your cluster is running
+a supported version of {product-title} 4.6.
+
+Finally, if you install of a 4.6 version that is exclusive to EUS, you will
+similarly not be able to upgrade to a later minor version until upgrades are provided to 4.10.
 
 [discrete]
 == Upgrade version paths
@@ -94,37 +113,67 @@ in the appropriate channels and be suggested for upgrade.
 {product-title} maintains an upgrade recommendation service that understands the
 version of {product-title} you have installed as well as the path to take within
 the channel you choose to get you to the next release. You can imagine seeing the
-following in the fast-{product-version} channel:
+following in the `fast-{product-version}` channel:
 
 * {product-version}.0
 * {product-version}.1
 * {product-version}.3
 * {product-version}.4
 
-The service only recommends upgrades that have been tested and have no known issues.
-If you are on {product-version}.1 and {product-title} is allowing you to select
-{product-version}.4, then it is safe for you to go from .{product-version}.1 to .{product-version}.4. Likewise,
-the absence of {product-version}.2 may be due to a CVE that was fixed in {product-version}.3 and Red Hat no
-longer suggests upgrading to a known vulnerable version. If an issue is found that
-results in a new version being retracted from the recommendations, Red Hat will
-release a new version that is capable of upgrading from all necessary versions,
-including the retracted version.
+The service recommends only upgrades that have been tested and have no serious issues.
+If your cluster is on {product-version}.1 and {product-title} suggests
+{product-version}.4, then it is safe for you to update from {product-version}.1 to {product-version}.4. Do not rely on consecutive patch numbers. In this example, {product-version}.2 is not, and never was, available in the channel. The update service will not suggest updating to a version of {product-title} that contains known vulnerabilities.
+
+Update stability depends on your channel. The presence of an update recommendation in
+the `candidate-{product-version}` channel does not imply that the update is supported.
+It means that no serious issues have been found with the update yet, but there might
+not be significant traffic through the update to suggest stability. The presence of
+an update recommendation in the `fast-{product-version}` or `stable-{product-version}`
+channels is a declaration that the update is fully supported while it is in the
+channel. While releases will never be removed from a channel, update recommendations
+that exhibit serious issues will be removed from all channels. Updates initiated
+after the update recommendation has been removed might not be supported.
+
+Red Hat will eventually provide supported update paths from any supported release in the `fast-{product-version}`
+or `stable-{product-version}` channels to the latest release in {product-version}.z,
+although there can be delays while safe paths away from troubled releases are
+constructed and verified.
 
 [discrete]
-== Disconnected clusters
+== Fast and stable channel use and strategies
 
-Customers which have chosen to not be connected to Red Hat and are curating their
-own {product-title} container image content manually should consult the Red Hat
-errata associated with product releases and note any comments impacting upgrades.
-During upgrade the user interface may caution about switching between these versions
-and it is up to the customer to ensure they have correctly selected the appropriate
-version before bypassing those cautions.
+The `fast-{product-version}` and `stable-{product-version}` channels present a choice between receiving
+general availability releases as soon as they are available or allowing Red Hat to
+control the rollout of those updates. If issues are detected during rollout or at a
+later time, upgrades to that version might be blocked in both the `fast-{product-version}` and
+`stable-{product-version}` channels, and a new version might be introduced that becomes the new
+preferred upgrade target.
+
+Customers can improve this process by configuring pre-production systems on the
+`fast-{product-version}` channel, configuring production systems on the `stable-{product-version}` channel,
+and participating in Red Hat’s connected customer program. Red
+Hat uses this program to observe the impact of updates on your specific hardware and software
+configurations. Future releases might improve or alter the pace at which updates move
+from the `fast-{product-version}` to the `stable-{product-version}` channel.
+
+[discrete]
+== Restricted network clusters
+
+If you manage the container images for your {product-title} clusters yourself, you must consult the Red Hat errata that is associated with product releases and note any comments that impact upgrades.
+During upgrade, the user interface might warn you about switching between these versions,
+so you must ensure that you selected an appropriate version before you bypass those warnings.
 
 [discrete]
 == Switching between channels
 
-It is supported for customers to switch between the fast and stable channel at any
-time. Channels only offer suggested upgrades, and will never suggest a dangerous
-upgrade. If you switch to the candidate channel after installing from a GA version,
-you will see a warning the current version is not recognized, and you can safely
-switch back to a GA channel.
+Your cluster is still supported if you change from the `stable-{product-version}` channel to
+the `fast-{product-version}` channel. Although you can switch to the
+`candidate-{product-version}` channel at any time, some releases in that channel might be unsupported release candidates.
+You can switch from the `candidate-{product-version}` channel to the `fast-{product-version}` channel
+if your current release is a general availability release. You can always
+switch from the `fast-{product-version}` channel to the `stable-{product-version}` channel, although if the current release was recently promoted to
+`fast-{product-version}` there can
+be a delay of up to a day for the release to be promoted to
+`stable-{product-version}`. If you change to a channel that does not include your
+current release, an alert displays and no updates can be recommended, but you can
+safely change back to your original channel at any point.

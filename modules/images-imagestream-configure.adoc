@@ -1,11 +1,11 @@
 // Module included in the following assemblies:
-// * assembly/openshift_images
+// * openshift_images/image-streams-managing.adoc
 
-[id="image-stream-configure_{context}"]
+[id="images-imagestream-configure_{context}"]
 = Configuring imagestreams
 
 ifdef::openshift-origin,openshift-online,openshift-enterprise,openshift-dedicated[]
-An imagestream object file contains the following elements.
+An `ImageStream` object file contains the following elements.
 endif::openshift-origin,openshift-online,openshift-enterprise,openshift-dedicated[]
 
 [id="image-stream-object-definition_{context}"]

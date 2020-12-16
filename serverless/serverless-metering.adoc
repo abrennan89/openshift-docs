@@ -1,12 +1,12 @@
-include::modules/common-attributes.adoc[]
+include::modules/serverless-document-attributes.adoc[]
 [id="metering-serverless"]
 = Using metering with {ServerlessProductName}
 :context: metering-serverless
-include::modules/serverless-document-attributes.adoc[]
+include::modules/common-attributes.adoc[]
 
 toc::[]
 
-As an {product-title} cluster administrator, you can use metering to analyze what is happening in your {ServerlessProductName} cluster.
+As a cluster administrator, you can use metering to analyze what is happening in your {ServerlessProductName} cluster.
 
 For more information about metering on {product-title}, see xref:../metering/metering-about-metering.adoc#about-metering[About metering].
 

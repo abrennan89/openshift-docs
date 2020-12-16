@@ -9,30 +9,120 @@ The Local Storage Operator is not installed in {product-title} by default. Use t
 
 .Prerequisites
 
-* Access to the {product-title} web console.
+* Access to the {product-title} web console or command-line interface (CLI).
 
 .Procedure
 
-. Create the `local-storage` project:
+. Create the `openshift-local-storage` project:
 +
+[source,terminal]
 ----
-$ oc new-project local-storage
+$ oc new-project openshift-local-storage
 ----
 
-. Install the Local Storage Operator from the web console.
+. Optional: Allow local storage creation on infrastructure nodes.
++
+You might want to use the Local Storage Operator to create volumes on infrastructure nodes in support of components such as logging and monitoring.
++
+You must adjust the default node selector so that the Local Storage Operator includes the infrastructure nodes, and not just worker nodes.
++
+To block the Local Storage Operator from inheriting the cluster-wide default selector, enter the following command:
++
+[source,terminal]
+----
+$ oc annotate project openshift-local-storage openshift.io/node-selector=''
+----
 
-.. Log in to the {product-title} web console.
+.From the UI
 
-.. Navigate to *Operators* -> *OperatorHub*.
+To install the Local Storage Operator from the web console, follow these steps:
 
-.. Type *Local Storage* into the filter box to locate the Local Storage Operator.
+. Log in to the {product-title} web console.
 
-.. Click *Install*.
+. Navigate to *Operators* -> *OperatorHub*.
 
-.. On the *Create Operator Subscription* page, select *A specific namespace on the cluster*. Select *local-storage* from the drop-down menu.
+. Type *Local Storage* into the filter box to locate the Local Storage Operator.
 
-.. Adjust the values for the *Update Channel* and *Approval Strategy* to the desired values.
+. Click *Install*.
 
-.. Click *Subscribe*.
+. On the *Install Operator* page, select *A specific namespace on the cluster*. Select *openshift-local-storage* from the drop-down menu.
 
-. Once finished, the Local Storage Operator will be listed in the *Installed Operators* section of the web console.
+. Adjust the values for *Update Channel* and *Approval Strategy* to the values that you want.
+
+. Click *Install*.
+
+Once finished, the Local Storage Operator will be listed in the *Installed Operators* section of the web console.
+
+.From the CLI
+. Install the Local Storage Operator from the CLI.
+
+.. Create an object YAML file to define an Operator group and subscription for the Local Storage Operator,
+such as `openshift-local-storage.yaml`:
++
+.Example openshift-local-storage.yaml
+[source,yaml]
+----
+apiVersion: operators.coreos.com/v1alpha2
+kind: OperatorGroup
+metadata:
+  name: local-operator-group
+  namespace: openshift-local-storage
+spec:
+  targetNamespaces:
+    - openshift-local-storage
+  ---
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: local-storage-operator
+  namespace: openshift-local-storage
+spec:
+  channel: <channel_version> <1>
+  installPlanApproval: Automatic <2>
+  name: local-storage-operator
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace
+----
+<1> This field can be edited to match your release selection of {product-title}.
+<2> The user approval policy for an install plan.
+
+. Create the Local Storage Operator object by entering the following command:
++
+[source,terminal]
+----
+$ oc apply -f openshift-local-storage.yaml
+----
++
+At this point, the Operator Lifecycle Manager (OLM) is now aware of the Local Storage Operator. A ClusterServiceVersion (CSV) for the Operator should appear in the target namespace, and APIs provided by the Operator should be available for creation.
++
+. Verify local storage installation by checking that all pods and the Local Storage Operator have been created:
+
+.. Check that all the required pods have been created:
++
+[source,terminal]
+----
+$ oc -n openshift-local-storage get pods
+----
++
+.Example output
+[source,terminal]
+----
+NAME                                      READY   STATUS    RESTARTS   AGE
+local-storage-operator-746bf599c9-vlt5t   1/1     Running   0          19m
+----
+
+.. Check the ClusterServiceVersion (CSV) YAML manifest to see that the Local Storage Operator is available in the `openshift-local-storage` project:
++
+[source,terminal]
+----
+$ oc get csvs -n openshift-local-storage
+----
++
+.Example output
+[source,terminal]
+----
+NAME                                         DISPLAY         VERSION               REPLACES   PHASE
+local-storage-operator.4.2.26-202003230335   Local Storage   4.2.26-202003230335              Succeeded
+----
+
+After all checks have passed, the Local Storage Operator is installed successfully.

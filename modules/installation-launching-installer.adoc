@@ -2,11 +2,13 @@
 //
 // * installing/installing_aws/installing-aws-customizations.adoc
 // * installing/installing_aws/installing-aws-default.adoc
+// * installing/installing_aws/installing-aws-government-region.adoc
 // * installing/installing_aws/installing-aws-network-customizations.adoc
 // * installing/installing_aws/installing-aws-private.adoc
 // * installing/installing_aws/installing-aws-vpc.adoc
 // * installing/installing_azure/installing-azure-customizations.adoc
 // * installing/installing_azure/installing-azure-default.adoc
+// * installing/installing_azure/installing-azure-government-region.adoc
 // * installing/installing_azure/installing-azure-private.adoc
 // * installing/installing_azure/installing-azure-vnet.adoc
 // * installing/installing_gcp/installing-gcp-customizations.adoc
@@ -16,10 +18,18 @@
 // * installing/installing_openstack/installing-openstack-installer-custom.adoc
 // * installing/installing_openstack/installing-openstack-installer-kuryr.adoc
 // * installing/installing_openstack/installing-openstack-installer.adoc
+// * installing/installing_rhv/installing-rhv-customizations.adoc
+// * installing/installing_rhv/installing-rhv-default.adoc
+// * installing/installing_vsphere/installing-vsphere-installer-provisioned.adoc
+// * installing/installing_vsphere/installing-vsphere-installer-provisioned-customizations.adoc
 // If you use this module in any other assembly, you must update the ifeval
 // statements.
 
 ifeval::["{context}" == "installing-aws-customizations"]
+:custom-config:
+:aws:
+endif::[]
+ifeval::["{context}" == "installing-aws-government-region"]
 :custom-config:
 :aws:
 endif::[]
@@ -55,6 +65,10 @@ ifeval::["{context}" == "installing-azure-customizations"]
 :custom-config:
 :azure:
 endif::[]
+ifeval::["{context}" == "installing-azure-government-region"]
+:custom-config:
+:azure:
+endif::[]
 ifeval::["{context}" == "installing-azure-vnet"]
 :custom-config:
 :azure:
@@ -74,9 +88,29 @@ endif::[]
 ifeval::["{context}" == "installing-openstack-installer"]
 :osp:
 endif::[]
+ifeval::["{context}" == "installing-rhv-customizations"]
+:custom-config:
+:rhv:
+endif::[]
+ifeval::["{context}" == "installing-rhv-default"]
+:no-config:
+:rhv:
+endif::[]
+ifeval::["{context}" == "installing-vsphere-installer-provisioned"]
+:no-config:
+:vsphere:
+endif::[]
+ifeval::["{context}" == "installing-vsphere-installer-provisioned-customizations"]
+:custom-config:
+:vsphere:
+endif::[]
+ifeval::["{context}" == "installing-vsphere-installer-provisioned-network-customizations"]
+:custom-config:
+:vsphere:
+endif::[]
 
 [id="installation-launching-installer_{context}"]
-= Deploy the cluster
+= Deploying the cluster
 
 You can install {product-title} on a compatible cloud platform.
 
@@ -87,9 +121,7 @@ You can run the `create cluster` command of the installation program only once, 
 
 .Prerequisites
 
-ifndef::osp[* Configure an account with the cloud platform that hosts your cluster.]
-
-ifdef::osp[* Have an administrator account on the target environment.]
+ifndef::osp,rhv,vsphere[* Configure an account with the cloud platform that hosts your cluster.]
 
 * Obtain the {product-title} installation program and the pull secret for your
 cluster.
@@ -108,6 +140,7 @@ endif::gcp[]
 
 . Run the installation program:
 +
+[source,terminal]
 ----
 $ ./openshift-install create cluster --dir=<installation_directory> \ <1>
     --log-level=info <2>
@@ -134,13 +167,14 @@ when copying installation files from an earlier {product-title} version.
 ====
 +
 --
+ifndef::rhv[]
 Provide values at the prompts:
 
 .. Optional: Select an SSH key to use to access your cluster machines.
 +
 [NOTE]
 ====
-For production {product-title} clusters on which you want to perform installation debugging or disaster recovery on, specify an SSH key that your `ssh-agent` process uses.
+For production {product-title} clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
 ====
 ifdef::aws[]
 .. Select *aws* as the platform to target.
@@ -148,7 +182,7 @@ ifdef::aws[]
 access key ID and secret access key for the user that you configured to run the
 installation program.
 .. Select the AWS region to deploy the cluster to.
-.. Select the base domain for the Route53 service that you configured for your cluster.
+.. Select the base domain for the Route 53 service that you configured for your cluster.
 endif::aws[]
 ifdef::azure[]
 .. Select *azure* as the platform to target.
@@ -186,7 +220,24 @@ and compute nodes.
 .. Select the base domain to deploy the cluster to. All DNS records will be
 sub-domains of this base and will also include the cluster name.
 endif::osp[]
+ifdef::vsphere[]
+.. Select *vsphere* as the platform to target.
+.. Specify the name of your vCenter instance.
+.. Specify the user name and password for the vCenter account that has the required permissions to create the cluster.
++
+The installation program connects to your vCenter instance.
+.. Select the datacenter in your vCenter instance to connect to.
+.. Select the default vCenter datastore to use.
+.. Select the vCenter cluster to install the {product-title} cluster in.
+.. Select the network in the vCenter instance that contains the virtual IP addresses and DNS records that you configured.
+.. Enter the virtual IP address that you configured for control plane API access.
+.. Enter the virtual IP address that you configured for cluster ingress.
+.. Enter the base domain. This base domain must be the same one that you used in the DNS records that you configured.
+endif::vsphere[]
 .. Enter a descriptive name for your cluster.
+ifdef::vsphere[]
+The cluster name must be the same one that you used in the DNS records that you configured.
+endif::vsphere[]
 ifdef::azure[]
 +
 [IMPORTANT]
@@ -205,6 +256,63 @@ ID that is generated from the cluster name.
 endif::gcp[]
 .. Paste the pull secret that you obtained from the
 link:https://cloud.redhat.com/openshift/install/pull-secret[Pull Secret] page on the {cloud-redhat-com} site.
+ifdef::openshift-origin[]
+This field is optional.
+endif::[]
+endif::rhv[]
+ifdef::rhv[]
+Respond to the installation program prompts.
+
+.. Optional: For `SSH Public Key`, select a password-less public key, such as `~/.ssh/id_rsa.pub`. This key authenticates connections with the new {product-title} cluster.
++
+[NOTE]
+====
+For production {product-title} clusters on which you want to perform installation debugging or disaster recovery, select an SSH key that your `ssh-agent` process uses.
+====
+.. For `Platform`, select `ovirt`.
+.. For `Enter oVirt's API endpoint URL`, enter the URL of the {rh-virtualization} API using this format:
++
+[source,terminal]
+----
+https://<engine-fqdn>/ovirt-engine/api <1>
+----
++
+<1> For `<engine-fqdn>`, specify the fully qualified domain name of the {rh-virtualization} environment.
++
+For example:
++
+[source,terminal]
+----
+https://rhv-env.virtlab.example.com/ovirt-engine/api
+----
++
+.. For `Is the oVirt CA trusted locally?`, enter `Yes` since you have already set up a CA certificate. Otherwise, enter `No`.
+.. For `oVirt's CA bundle`, if you entered `Yes` for the preceding question, copy the certificate content from `/etc/pki/ca-trust/source/anchors/ca.pem` and paste it here. Then, press `Enter` twice. Otherwise, if you entered `No` for the preceding question, this question does not appear.
+.. For `oVirt engine username`, enter the user name and profile of the {rh-virtualization} administrator using this format:
++
+[source,terminal]
+----
+<username>@<profile> <1>
+----
++
+<1> For `<username>`, specify the user name of an {rh-virtualization} administrator. For `<profile>`, specify the login profile, which you can get by going to the {rh-virtualization} Administration Portal login page and reviewing the *Profile* dropdown list. Together, the user name and profile should look similar to this example:
++
+[source,terminal]
+----
+admin@internal
+----
++
+.. For `oVirt engine password`, enter the {rh-virtualization} admin password.
+.. For `oVirt cluster`, select the cluster for installing {product-title}.
+.. For `oVirt storage domain`, select the storage domain for installing {product-title}.
+.. For `oVirt network`, select a virtual network that has access to the {rh-virtualization} Manager REST API.
+.. For `Internal API Virtual IP`, enter the static IP address you set aside for the cluster’s REST API.
+.. For `Internal DNS Virtual IP`, enter the static IP address you set aside for the cluster’s internal DNS service.
+.. For `Ingress virtual IP`, enter the static IP address you reserved for the wildcard apps domain.
+.. For `Base Domain`, enter the base domain of the {product-title} cluster. If this cluster is exposed to the outside world, this must be a valid domain recognized by DNS infrastructure. For example, enter: `virtlab.example.com`
+.. For `Cluster Name`, enter the name of the cluster. For example, `my-cluster`. Use cluster name from the externally registered/resolvable DNS entries you created for the {product-title} REST API and apps domain names. The installation program also gives this name to the cluster in the {rh-virtualization} environment.
+.. For `Pull Secret`, copy the pull secret from the `pull-secret.txt` file you downloaded earlier and paste it here. You can also get a copy of the same pull secret from the link:https://cloud.redhat.com/openshift/install/pull-secret[Pull Secret] page on the {cloud-redhat-com} site.
+endif::rhv[]
 --
 endif::no-config[]
 +
@@ -221,7 +329,7 @@ display in your terminal.
 +
 [IMPORTANT]
 ====
-The Ignition config files that the installation program generates contain certificates that expire after 24 hours. You must keep the cluster running for 24 hours in a non-degraded state to ensure that the first certificate rotation has finished.
+The Ignition config files that the installation program generates contain certificates that expire after 24 hours, which are then renewed at that time. If the cluster is shut down before renewing the certificates and the cluster is later restarted after the 24 hours have elapsed, the cluster automatically recovers the expired certificates. The exception is that you must manually approve the pending `node-bootstrapper` certificate signing requests (CSRs) to recover kubelet certificates. See the documentation for _Recovering from expired control plane certificates_ for more information.
 ====
 +
 [IMPORTANT]
@@ -242,7 +350,12 @@ ifdef::gcp[]
 you can remove it.
 endif::gcp[]
 
+
 ifeval::["{context}" == "installing-aws-customizations"]
+:!custom-config:
+:!aws:
+endif::[]
+ifeval::["{context}" == "installing-aws-government-region"]
 :!custom-config:
 :!aws:
 endif::[]
@@ -282,6 +395,10 @@ ifeval::["{context}" == "installing-azure-customizations"]
 :!custom-config:
 :!azure:
 endif::[]
+ifeval::["{context}" == "installing-azure-government-region"]
+:!custom-config:
+:!azure:
+endif::[]
 ifeval::["{context}" == "installing-azure-vnet"]
 :!custom-config:
 :!azure:
@@ -296,4 +413,24 @@ ifeval::["{context}" == "installing-openstack-installer-kuryr"]
 endif::[]
 ifeval::["{context}" == "installing-openstack-installer"]
 :!osp:
+endif::[]
+ifeval::["{context}" == "installing-rhv-customizations"]
+:!custom-config:
+:!rhv:
+endif::[]
+ifeval::["{context}" == "installing-rhv-default"]
+:!no-config:
+:!rhv:
+endif::[]
+ifeval::["{context}" == "installing-vsphere-installer-provisioned"]
+:!no-config:
+:!vsphere:
+endif::[]
+ifeval::["{context}" == "installing-vsphere-installer-provisioned-customizations"]
+:!custom-config:
+:!vsphere:
+endif::[]
+ifeval::["{context}" == "installing-vsphere-installer-provisioned-network-customizations"]
+:!custom-config:
+:!vsphere:
 endif::[]

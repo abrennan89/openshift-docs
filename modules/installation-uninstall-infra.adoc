@@ -1,0 +1,123 @@
+// Module included in the following assemblies:
+//
+// * installing/installing_osp/uninstalling-cluster-osp.adoc
+
+[id="installation-uninstall-infra_{context}"]
+= Removing a cluster on {rh-openstack} that uses your own infrastructure
+
+You can remove an {product-title} cluster on {rh-openstack-first} that uses your own infrastructure. To complete the removal process quickly, create and run several Ansible playbooks.
+
+.Prerequisites
+
+* Python 3 is installed on your machine
+* You downloaded the modules in "Downloading playbook dependencies"
+
+.Procedure
+
+[NOTE]
+You may have the `common.yaml` and `inventory.yaml` playbooks left over from when you installed {product-title}. If you do, you can skip the first two steps of the procedure.
+
+. Insert the following content into a local file called `common.yaml`:
++
+.`common.yaml` Ansible playbook
+[%collapsible]
+====
+[source,yaml]
+----
+include::https://raw.githubusercontent.com/openshift/installer/release-4.6/upi/openstack/common.yaml[]
+----
+====
+
+. Insert the following content into a local file called `inventory.yaml`, and edit the values to match your own:
++
+.`inventory.yaml` Ansible playbook
+[%collapsible]
+====
+[source,yaml]
+----
+include::https://raw.githubusercontent.com/openshift/installer/release-4.6/upi/openstack/inventory.yaml[]
+----
+====
+
+. _Optional_: If your cluster uses Kuryr, insert the following content into a local file called `down-load-balancers.yaml`:
++
+.`down-load-balancers.yaml`
+[%collapsible]
+====
+[source,yaml]
+----
+include::https://raw.githubusercontent.com/openshift/installer/release-4.6/upi/openstack/down-load-balancers.yaml[]
+----
+====
+
+. Insert the following content into a local file called `down-compute-nodes.yaml`:
++
+.`down-compute-nodes.yaml`
+[%collapsible]
+====
+[source,yaml]
+----
+include::https://raw.githubusercontent.com/openshift/installer/release-4.6/upi/openstack/down-compute-nodes.yaml[]
+----
+====
+
+. Insert the following content into a local file called `down-control-plane.yaml`:
++
+.`down-control-plane.yaml`
+[%collapsible]
+====
+[source,yaml]
+----
+include::https://raw.githubusercontent.com/openshift/installer/release-4.6/upi/openstack/down-control-plane.yaml[]
+----
+====
+
+. Insert the following content into a local file called `down-bootstrap.yaml`:
++
+.`down-bootstrap.yaml`
+[%collapsible]
+====
+[source,yaml]
+----
+include::https://raw.githubusercontent.com/openshift/installer/release-4.6/upi/openstack/down-bootstrap.yaml[]
+----
+====
+
+. Insert the following content into a local file called `down-network.yaml`:
++
+.`down-network.yaml`
+[%collapsible]
+====
+[source,yaml]
+----
+include::https://raw.githubusercontent.com/openshift/installer/release-4.6/upi/openstack/down-network.yaml[]
+----
+====
+
+. Insert the following content into a local file called `down-security-groups.yaml`:
++
+.`down-security-groups.yaml`
+[%collapsible]
+====
+[source,yaml]
+----
+include::https://raw.githubusercontent.com/openshift/installer/release-4.6/upi/openstack/down-security-groups.yaml[]
+----
+====
+
+. On a command line, run the playbooks you created:
++
+[source,terminal]
+----
+$ ansible-playbook -i inventory.yaml  \
+	down-bootstrap.yaml      \
+	down-control-plane.yaml  \
+	down-compute-nodes.yaml  \
+	down-load-balancers.yaml \
+	down-network.yaml        \
+	down-security-groups.yaml
+----
+
+. Remove any DNS record changes you made for the {product-title} installation.
+
+{product-title} is removed from your infrastructure.
