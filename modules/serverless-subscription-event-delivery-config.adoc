@@ -1,0 +1,45 @@
+// Module included in the following assemblies:
+//
+// serverless/event_workflows/serverless-event-delivery.adoc
+
+[id="serverless-subscription-event-delivery-config_{context}"]
+= Configuring event delivery failure parameters using subscriptions
+
+Developers can configure event delivery parameters for individual subscriptions by modifying the `delivery` settings for a `Subscription` object.
+
+.Example subscription YAML
+[source,yaml]
+----
+apiVersion: messaging.knative.dev/v1beta1
+kind: Subscription
+metadata:
+  name: <subscription_name> <1>
+  namespace: default
+spec:
+  channel:
+    apiVersion: messaging.knative.dev/v1
+    kind: Channel
+    name: <channel_name> <2>
+  delivery:
+    deadLetterSink: <3>
+      ref:
+        apiVersion: serving.knative.dev/v1
+        kind: Service
+        name: <sink_name> <4>
+    backoffDelay: <duration> <5>
+    backoffPolicy: linear <6>
+    retry: <integer> <7>
+  subscriber:
+    ref:
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      name: <sink_name> <8>
+----
+<1> Name of the subscription.
+<2> Configuration settings for the channel that the subscription connects to.
+<3> Configuration settings to enable using a dead letter sink. This tells the subscription what happens to events that cannot be delivered to the subscriber.
+<4> When this is configured, events that failed to be consumed are sent to the dead letter sink destination. The event is dropped, no re-delivery of the event is attempted, and an error is logged in the system. The destination can be a Knative service or a URI.
+<5> You can set the `backoffDelay` delivery parameter to specify the time delay before an event delivery retry is attempted after a failure. The duration of the `backoffDelay` parameter is specified using the https://en.wikipedia.org/wiki/ISO_8601#Durations[ISO 8601] format.
+<6> The `backoffPolicy` delivery parameter can be used to specify the retry back off policy. The policy can be specified as either linear or exponential. When using the linear back off policy, the back off delay is the time interval specified between retries. When using the exponential backoff policy, the back off delay is equal to `backoffDelay*2^<numberOfRetries>`.
+<7> The number of times that event delivery will be retried before the event is sent to the dead letter sink.
+<8> Configuration settings for the subscriber. This is the event sink that events are delivered to from the channel.

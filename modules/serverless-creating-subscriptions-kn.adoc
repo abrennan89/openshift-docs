@@ -1,6 +1,6 @@
 // Module included in the following assemblies:
 //
-//  * serverless/event_workflows/serverless-channels.adoc
+//  * serverless/event_workflows/serverless-subs.adoc
 
 [id="serverless-creating-subscriptions-kn_{context}"]
 = Creating subscriptions using the Knative CLI
@@ -17,16 +17,23 @@ To create subscriptions using the `kn` CLI, ensure that:
 
 .Procedure
 
-* Create a subscription to connect a sink to a channel.
+* Create a subscription to connect a sink to a channel:
 +
 [source,terminal]
 ----
 $ kn subscription create <subscription_name> \
-  --channel <Group:Version:Kind>:<channel_name> \
-  --sink <sink_prefix>:<sink_name> \
-  --sink-reply <sink_prefix>:<sink_name> \
-  --sink-dead-letter <sink_prefix>:<sink_name>
+  --channel <Group:Version:Kind>:<channel_name> \ <1>
+  --sink <sink_prefix>:<sink_name> \ <2>
+  --sink-reply <sink_prefix>:<sink_name> \ <3>
+  --sink-dead-letter <sink_prefix>:<sink_name> <3>
 ----
+<1> `--channel` specifies the source for cloud events that should be processed. You must provide the channel name. If you are not using the default channel that is backed by the Channel resource, you must prefix the channel name with the `<Group:Version:Kind>` for the specified channel type. For example, this will be `messaging.knative.dev:v1beta1:KafkaChannel` for a Kafka backed channel.
+<2> `--sink` specifies the target destination to which the event should be delivered. By default, the `<sink_name>`` is interpreted as a Knative service of this name, in the same namespace as the subscription. You can specify the type of the sink by using one of the following prefixes:
+`ksvc`:: A Knative service.
+`svc`:: A Kubernetes Service.
+`channel`:: A channel that should be used as destination. Only default channel types can be referenced here.
+`broker`:: An Eventing broker.
+<3> `--sink-reply` and `--sink-dead-letter` are optional arguments. They can be used to specify where the sink reply will be sent to, and where to send the cloud event in case of a failure, respectively. Both use the same naming conventions for specifying the sink as the `--sink` flag.
 +
 .Example command
 [source,terminal]

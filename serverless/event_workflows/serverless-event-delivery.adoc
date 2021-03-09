@@ -1,0 +1,31 @@
+include::modules/serverless-document-attributes.adoc[]
+[id="serverless-event-delivery"]
+= Configuring event delivery parameters
+include::modules/common-attributes.adoc[]
+:context: serverless-event-delivery
+
+toc::[]
+
+You can configure event delivery parameters for Knative Eventing that will be applied in cases where an event fails to be delivered.
+
+These event delivery parameters can be set as cluster-scoped or namespace-scoped default settings by a cluster administrator, which will be applied to all subscriptions created in the cluster or namespace, or individually per subscription by a developer. Individual configurations set for a `Subscription` resource will override any cluster-wide or namespace-wide configurations.
+
+Dead letter sink:: You can configure the `deadLetterSink` delivery parameter so that if an event fails to be delivered it will be sent to the specified event sink.
+
+Retries:: You can set a minimum number of times that the delivery must be retried before the event is sent to the dead letter sink, by configuring the `retry` delivery parameter with an integer value.
+
+Back off delay:: You can set the `backoffDelay` delivery parameter to specify the time delay before an event delivery retry is attempted after a failure. The duration of the `backoffDelay` parameter is specified using the https://en.wikipedia.org/wiki/ISO_8601#Durations[ISO 8601] format.
+
+Back off policy:: The `backoffPolicy` delivery parameter can be used to specify the retry back off policy. The policy can be specified as either linear or exponential. When using the linear back off policy, the back off delay is the time interval specified between retries. When using the exponential backoff policy, the back off delay is equal to `backoffDelay*2^<numberOfRetries>`.
+
+include::modules/serverless-subscription-event-delivery-config.adoc[leveloffset=+1]
+// Create procedure modules for setting each one
+// Add links to each workflow in which these would be used
+// TODO: Add trigger settings once this is implemented
+
+[id="serverless-event-delivery-additional-resources"]
+== Additional resources
+
+* See xref:../../serverless/event_workflows/serverless-channels.adoc#serverless-channels[Knative Eventing workflows using channels] for more information about subscriptions.
+* See xref:../../serverless/event_workflows/serverless-channels.adoc#serverless-channels-creating-subs[Creating subscriptions].
+// TODO: Break subscriptions into their own sub-assembly as per upstream, inc. kn subscription commands

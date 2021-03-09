@@ -1,0 +1,50 @@
+////
+Module included in the following assemblies:
+- /serverless/event_workflows/serverless-event-delivery.adoc
+////
+
+[id="serverless-event-delivery-admin-config_{context}"]
+= Configuring global event delivery parameters by using config maps
+
+////
+    # default-br-delivery-config is the configuration for determining the default
+    # Broker delivery settings to apply on all GCP Brokers created within a scope.
+    #
+    # When determining the defaults to use for a custom object in a specific
+    # namespace, the precedence rules are:
+    # If the Broker's spec specifies the delivery settings to use, use that.
+    # If not and that namespace is in the `namespaceDefaults` key, then use the
+    # defaults specified there. If not, then use the defaults specified in
+    # `clusterDefaults`.
+////
+
+// configmap example https://github.com/google/knative-gcp/blob/main/config/core/configmaps/br-delivery.yaml
+
+
+[source,yaml]
+----
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-br-delivery
+  namespace: cloud-run-events
+  annotations:
+    knative.dev/example-checksum: "a7f41751"
+    # what is this? required?
+data:
+  default-br-delivery-config: |
+    clusterDefaults:
+      deadLetterSink: <sink>
+      backoffDelay: <duration>
+      backoffPolicy: exponential
+      retry: 10
+    namespaceDefaults:
+      customized-ns: <namespace>
+        backoffDelay: <duration>
+        backoffPolicy: linear
+        deadLetterSink:
+          uri: <uri> <1>
+        retry: <integer>
+----
+<1> A URI with scheme `pubsub` indicating the dead letter `pubsub` topic ID.
+// deadLetterSink options besides URI?

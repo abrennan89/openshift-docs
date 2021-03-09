@@ -1,0 +1,24 @@
+include::modules/serverless-document-attributes.adoc[]
+[id="serverless-subs"]
+= Using subscriptions
+include::modules/common-attributes.adoc[]
+:context: serverless-subs
+
+toc::[]
+
+After events have been sent to a channel from an event source or producer, these events can be sent to multiple Knative services, or other sinks, by using a subscription.
+
+image::serverless-event-channel-workflow.png[Channel workflow overview]
+
+If a subscriber rejects an event, there are no re-delivery attempts by default. Developers can configure xref:../../serverless/event_workflows/serverless-event-delivery.adoc#serverless-event-delivery[re-delivery attempts] by modifying the `delivery` spec in a `Subscription` object. Cluster administrators can also configure re-delivery attempts globally by modifying the `config-br-delivery` config map.
+
+[id="serverless-channels-creating-subs"]
+== Creating subscriptions
+
+Developers can create subscriptions that allow event sinks to subscribe to channels and receive events directly.
+
+include::modules/serverless-creating-subscriptions-odc.adoc[leveloffset=+2]
+include::modules/serverless-creating-subscriptions-kn.adoc[leveloffset=+2]
+include::modules/serverless-creating-subscriptions-yaml.adoc[leveloffset=+2]
+// delete subs
+include::modules/serverless-deleting-subscriptions-kn.adoc[leveloffset=+1]
