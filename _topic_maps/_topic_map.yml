@@ -29,6 +29,7 @@ Distros: openshift-kueue
 Topics:
 - Name: Welcome
   File: index
+<<<<<<< HEAD
 - Name: About Red Hat build of Kueue
   File: about-kueue
 ---
@@ -45,3 +46,5 @@ Distros: openshift-kueue
 Topics:
 - Name: Configuring quotas
   File: configuring-quotas
+=======
+>>>>>>> 8ea215b2da (OSDOCS-13844: Adding new branch for Kueue standalone docs)
