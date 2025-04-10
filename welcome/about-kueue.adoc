@@ -24,7 +24,7 @@ In the context of {product-title}, a job can be defined as a one-time or on-dema
 
 // Personas
 [id="about-kueue-personas"]
-== {product-title} personas
+== Personas
 
 Different personas exist in a {product-title} workflow.
 
@@ -34,7 +34,7 @@ Serving users:: Serving users run jobs on the cluster. For example, to expose a 
 Platform developers:: Platform developers integrate {product-title} with other software. They might also contribute to the Kueue open source project.
 
 [id="about-kueue-workflow"]
-== {product-title} workflow
+== Workflow overview
 // TODO: add diagram?
 
 The {product-title} workflow can be described at a high level as follows:
