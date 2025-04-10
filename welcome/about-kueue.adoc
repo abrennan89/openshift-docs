@@ -6,13 +6,21 @@ include::_attributes/common-attributes.adoc[]
 
 toc::[]
 
-{product-title} is a Kubernetes-native system that manages access to a limited pool of resources by determining when a job waits, is admitted to start by creating pods, or should be _preempted_, meaning that active pods for that job are deleted.
+{product-title} is a Kubernetes-native system that manages access to resources for jobs.
+{product-title} can determine when a job waits, is admitted to start by creating pods, or should be _preempted_, meaning that active pods for that job are deleted.
 
+[NOTE]
+====
 In the context of {product-title}, a job can be defined as a one-time or on-demand task that runs to completion.
+====
+
+{product-title} is based on the link:https://kueue.sigs.k8s.io/docs/[Kueue] open source project.
 
 {product-title} is compatible with environments that use heterogeneous, elastic resources. This means that the environment has many different resource types, and those resources are capable of dynamic scaling.
 
-{product-title} is based on the link:https://kueue.sigs.k8s.io/docs/[Kueue] open source project.
+{product-title} does not replace any existing components in a Kubernetes cluster, but instead integrates with the existing Kubernetes API server, scheduler, and cluster autoscaler components.
+
+{product-title} supports all-or-nothing semantics. This means that either an entire change is applied successfully to pods, or the entire change is rolled back, preventing partial updates and issues that could be caused by them.
 
 // Personas
 [id="about-kueue-personas"]
@@ -31,10 +39,10 @@ Platform developers:: Platform developers integrate {product-title} with other s
 
 The {product-title} workflow can be described at a high level as follows:
 
-. Batch administrators create and configure `Flavor`, `Queue`, and `ClusterQueue` resources.
+. Batch administrators create and configure `ResourceFlavor`, `LocalQueue`, `ClusterQueue`, `AdmissionCheck`, and `BorrowingCohort` resources.
 . User personas create jobs on the cluster.
 . The Kubernetes API server validates and accepts job data.
-. {product-title} admits jobs based on configured options, such as order or quota. It injects affinity into the job by using flavors.
+. {product-title} admits jobs based on configured options, such as order or quota. It injects affinity into the job by using resource flavors, and creates a `Workload` object that corresponds to each job.
 . Depending on the job type, one of the available controllers creates pods.
 . The Kubernetes scheduler assigns pods to a node in the cluster.
 . The Kubernetes cluster autoscaler provisions more nodes as required.
