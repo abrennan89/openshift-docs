@@ -9,7 +9,7 @@ toc::[]
 [role="_abstract"]
 You can refer to tested object maximums when planning your {product-title} environment for {VirtProductName}. However, approaching the maximum values can reduce performance and increase latency. Ensure that you plan for your specific use case and consider all factors that can impact cluster scaling.
 
-For more information about cluster configuration and options that impact performance, see the link:https://access.redhat.com/articles/6994974[{VirtProductName} - Tuning & Scaling Guide] in the Red{nbsp}Hat Knowledgebase.
+For more information about cluster configuration and options that impact performance, see the {VirtProductName} - Tuning & Scaling Guide in the Red{nbsp}Hat Knowledgebase.
 
 include::modules/virt-tested-maximums.adoc[leveloffset=+1]
 
@@ -19,4 +19,4 @@ include::modules/virt-tested-maximums.adoc[leveloffset=+1]
 * link:https://access.redhat.com/articles/6994974[{VirtProductName} - Tuning & Scaling Guide]
 * xref:../../scalability_and_performance/planning-your-environment-according-to-object-maximums.adoc#planning-your-environment-according-to-object-maximums[Planning your environment according to object maximums]
 * xref:../../nodes/nodes/nodes-nodes-managing-max-pods.adoc#nodes-nodes-managing-max-pods[Managing the maximum number of pods per node]
-* link:https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes[{rh-rhacm-title} documentation]
+* link:https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes[{rh-rhacm-title} documentation]* link:https://access.redhat.com/articles/6994974[{VirtProductName} - Tuning & Scaling Guide]
