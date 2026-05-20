@@ -33,23 +33,23 @@ $ virtctl create vm --name vm-rhel-9 --instancetype u1.small --preference rhel.9
 apiVersion: kubevirt.io/v1
 kind: VirtualMachine
 metadata:
-  name: vm-rhel-9 # <1>
+  name: vm-rhel-9
 spec:
   dataVolumeTemplates:
   - metadata:
-      name: imported-volume-6dcpf # <2>
+      name: imported-volume-6dcpf
     spec:
       source:
         http:
-          url: https://example.com/rhel9.qcow2 # <3>
+          url: https://example.com/rhel9.qcow2
       storage:
         resources:
           requests:
-            storage: 10Gi # <4>
+            storage: 10Gi
   instancetype:
-    name: u1.small # <5>
+    name: u1.small
   preference:
-    name: rhel.9 # <6>
+    name: rhel.9
   runStrategy: Always
   template:
     spec:
@@ -62,12 +62,15 @@ spec:
           name: imported-volume-6dcpf
         name: imported-volume-6dcpf
 ----
-<1> The VM name.
-<2> The data volume name.
-<3> The URL of the image.
-<4> The size of the storage requested for the data volume.
-<5> The instance type to use to control resource sizing of the VM.
-<6> The preference to use.
++
+The following parameters are specified:
++
+`name` (under `metadata`):: The VM name.
+`name` (under `dataVolumeTemplates.metadata`):: The data volume name.
+`url`:: The URL of the image.
+`storage`:: The size of the storage requested for the data volume.
+`name` (under `instancetype`):: The instance type to use to control resource sizing of the VM.
+`name` (under `preference`):: The preference to use.
 
 . Create the VM by running the following command:
 +

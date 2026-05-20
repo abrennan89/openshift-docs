@@ -35,9 +35,9 @@ spec:
         devices:
           interfaces:
             - name: default
-              masquerade: {} <1>
+              masquerade: {}
               ports:
-                - port: 80 <2>
+                - port: 80
 # ...
       networks:
       - name: default
@@ -49,13 +49,16 @@ spec:
             ethernets:
               eth0:
                 dhcp4: true
-                addresses: [ fd10:0:2::2/120 ] <3>
-                gateway6: fd10:0:2::1 <4>
+                addresses: [ fd10:0:2::2/120 ]
+                gateway6: fd10:0:2::1
 ----
-<1> Connect using masquerade mode.
-<2> Allows incoming traffic on port 80 to the virtual machine.
-<3> The static IPv6 address as determined by the `Network.pod.vmIPv6NetworkCIDR` field in the virtual machine instance configuration. The default value is `fd10:0:2::2/120`.
-<4> The gateway IP address as determined by the `Network.pod.vmIPv6NetworkCIDR` field in the virtual machine instance configuration. The default value is `fd10:0:2::1`.
++
+The following parameters are specified:
++
+`masquerade`:: Connect using masquerade mode.
+`port`:: Allows incoming traffic on port 80 to the virtual machine.
+`addresses`:: The static IPv6 address as determined by the `Network.pod.vmIPv6NetworkCIDR` field in the virtual machine instance configuration. The default value is `fd10:0:2::2/120`.
+`gateway6`:: The gateway IP address as determined by the `Network.pod.vmIPv6NetworkCIDR` field in the virtual machine instance configuration. The default value is `fd10:0:2::1`.
 
 . Create the virtual machine in the namespace:
 +

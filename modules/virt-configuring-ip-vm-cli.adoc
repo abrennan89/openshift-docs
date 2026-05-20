@@ -38,10 +38,11 @@ spec:
           networkData: |
             version: 2
             ethernets:
-              eth1: <1>
+              eth1:
                 dhcp4: true
 ----
-<1> Specify the interface name.
++
+Specify the interface name for `eth1`.
 
 ** To configure a static IP, specify the interface name and the IP address:
 +
@@ -58,9 +59,12 @@ spec:
           networkData: |
             version: 2
             ethernets:
-              eth1: <1>
+              eth1:
                 addresses:
-                - 10.10.10.14/24 <2>
+                - 10.10.10.14/24
 ----
-<1> Specify the interface name.
-<2> Specify the static IP address.
++
+The following parameters are specified:
++
+`eth1`:: Specify the interface name.
+`addresses`:: Specify the static IP address.

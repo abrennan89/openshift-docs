@@ -20,8 +20,9 @@ kind: DataVolume
 metadata:
   name: datavolume-example
   annotations:
-    v1.multus-cni.io/default-network: bridge-network <1>
+    v1.multus-cni.io/default-network: bridge-network
 # ...
 ----
-<1> Multus network annotation
++
+The `v1.multus-cni.io/default-network` annotation specifies the Multus network name.
 ====

@@ -30,14 +30,14 @@ spec:
   template:
     metadata:
       annotations:
-        cpu-load-balancing.crio.io: disable <1>
-        cpu-quota.crio.io: disable <2>
-        irq-load-balancing.crio.io: disable <3>
+        cpu-load-balancing.crio.io: disable
+        cpu-quota.crio.io: disable
+        irq-load-balancing.crio.io: disable
     spec:
       domain:
         cpu:
-          sockets: 1 <4>
-          cores: 5 <5>
+          sockets: 1
+          cores: 5
           threads: 2
           dedicatedCpuPlacement: true
           isolateEmulatorThread: true
@@ -52,23 +52,26 @@ spec:
           rng: {}
       memory:
         hugepages:
-          pageSize: 1Gi <6>
+          pageSize: 1Gi
           guest: 8Gi
       networks:
         - name: default
           pod: {}
         - multus:
-            networkName: dpdk-net <7>
+            networkName: dpdk-net
           name: nic-east
 # ...
 ----
-<1> This annotation specifies that load balancing is disabled for CPUs that are used by the container.
-<2> This annotation specifies that the CPU quota is disabled for CPUs that are used by the container.
-<3> This annotation specifies that Interrupt Request (IRQ) load balancing is disabled for CPUs that are used by the container.
-<4> The number of sockets inside the VM. This field must be set to `1` for the CPUs to be scheduled from the same Non-Uniform Memory Access (NUMA) node.
-<5> The number of cores inside the VM. This must be a value greater than or equal to `1`. In this example, the VM is scheduled with 5 hyper-threads or 10 CPUs.
-<6> The size of the huge pages. The possible values for x86-64 architecture are 1Gi and 2Mi. In this example, the request is for 8 huge pages of size 1Gi.
-<7> The name of the SR-IOV `NetworkAttachmentDefinition` object.
++
+The following parameters are specified:
++
+`cpu-load-balancing.crio.io`:: This annotation specifies that load balancing is disabled for CPUs that are used by the container.
+`cpu-quota.crio.io`:: This annotation specifies that the CPU quota is disabled for CPUs that are used by the container.
+`irq-load-balancing.crio.io`:: This annotation specifies that Interrupt Request (IRQ) load balancing is disabled for CPUs that are used by the container.
+`sockets`:: The number of sockets inside the VM. This field must be set to `1` for the CPUs to be scheduled from the same Non-Uniform Memory Access (NUMA) node.
+`cores`:: The number of cores inside the VM. This must be a value greater than or equal to `1`. In this example, the VM is scheduled with 5 hyper-threads or 10 CPUs.
+`pageSize`:: The size of the huge pages. The possible values for x86-64 architecture are 1Gi and 2Mi. In this example, the request is for 8 huge pages of size 1Gi.
+`networkName`:: The name of the SR-IOV `NetworkAttachmentDefinition` object.
 
 . Save and exit the editor.
 . Apply the `VirtualMachine` manifest:

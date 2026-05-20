@@ -17,15 +17,18 @@ Devices on a local area network can use LLDP to advertise their identity, capabi
 apiVersion: nmstate.io/v1
 kind: NodeNetworkConfigurationPolicy
 metadata:
-  name: enable-lldp-ethernets-up # <1>
+  name: enable-lldp-ethernets-up
 spec:
   capture:
-    ethernets: interfaces.type=="ethernet" 
+    ethernets: interfaces.type=="ethernet"
     ethernets-up: capture.ethernets | interfaces.state=="up"
-    ethernets-lldp: capture.ethernets-up | interfaces.lldp.enabled:=true # <2>
+    ethernets-lldp: capture.ethernets-up | interfaces.lldp.enabled:=true
   desiredState:
     interfaces: "{{ capture.ethernets-lldp.interfaces }}"
 # ...
 ----
-<1> Specifies the name of the node network configuration policy.
-<2> Specifies that LLDP is enabled for all ethernet ports that have the interface state set to `up`.
++
+where:
++
+`name`:: Specifies the name of the node network configuration policy.
+`ethernets-lldp`:: Specifies that LLDP is enabled for all ethernet ports that have the interface state set to `up`.
